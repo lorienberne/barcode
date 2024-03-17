@@ -3,6 +3,7 @@ import argparse
 import os
 import cv2
 import random
+from tqdm import tqdm
 
 def main(args):
 
@@ -24,7 +25,7 @@ def main(args):
     os.makedirs(output_directory, exist_ok=True)
 
     for root, dirs, files in os.walk(input_directory):
-        for file in files:
+        for file in tqdm(files):
             if file.endswith(".png"):
 
                 # Define the augmentation pipeline

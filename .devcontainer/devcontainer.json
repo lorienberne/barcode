@@ -5,7 +5,10 @@
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash"
 	},
-	"runArgs": ["--runtime=nvidia"],
+	"runArgs": [
+		"--runtime=nvidia", 
+		"--gpus", "all"
+	],
 	"extensions": [
 		"ms-python.python",
 		"ms-python.vscode-pylance",
