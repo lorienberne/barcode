@@ -9,6 +9,17 @@ def main(args):
     input_directory = args.input_directory
     output_directory = args.output_directory
 
+    # Delete the output directory if it exists
+    if os.path.exists(output_directory):
+        for root, dirs, files in os.walk(output_directory):
+            for file in files:
+                os.remove(os.path.join(root, file))
+            for dir in dirs:
+                os.rmdir(os.path.join(root, dir))
+        os.rmdir(output_directory)
+
+    os.makedirs(output_directory, exist_ok=True)
+
     for root, dirs, files in os.walk(input_directory):
         for file in files:
             if file.endswith(".png"):
@@ -16,16 +27,16 @@ def main(args):
                 # Define the augmentation pipeline
                 transform = A.Compose(
                     [
-                        A.RandomBrightnessContrast(p=0.5),
-                        A.RandomGamma(p=0.5),
-                        A.Blur(p=0.5),
-                        A.GaussNoise(p=0.5),
-                        A.RGBShift(p=0.5),
-                        A.RandomFog(p=0.5),
-                        A.RandomRain(p=0.5),
-                        A.RandomSnow(p=0.5),
-                        A.RandomSunFlare(p=0.5),
-                        A.RandomShadow(p=0.5),
+                        A.RandomBrightnessContrast(p=args.random_brightness_contrast),
+                        A.RandomGamma(p=args.random_gamma),
+                        A.Blur(p=args.blur),
+                        A.GaussNoise(p=args.gauss_noise),
+                        A.RGBShift(p=args.rgb_shift),
+                        A.RandomFog(p=args.random_fog),
+                        A.RandomRain(p=args.random_rain),
+                        A.RandomSnow(p=args.random_snow),
+                        A.RandomSunFlare(p=args.random_sun_flare),
+                        A.RandomShadow(p=args.random_shadow),
                     ]
                 )
 
@@ -68,6 +79,76 @@ if __name__ == "__main__":
         type=int,
         default=50,
         help="Number of barcode images to generate",
+    )
+    parser.add_argument(
+        "-rn-br-cont",
+        "--random-brightness-contrast",
+        type=float,
+        default=0.05,
+        help="Random brightness contrast",
+    )
+    parser.add_argument(
+        "-rn-gamma",
+        "--random-gamma",
+        type=float,
+        default=0.05,
+        help="Random gamma",
+    )
+    parser.add_argument(
+        "-bl",
+        "--blur",
+        type=float,
+        default=0.05,
+        help="Blur",
+    )
+    parser.add_argument(
+        "-gn",
+        "--gauss-noise",
+        type=float,
+        default=0.05,
+        help="Gauss noise",
+    )
+    parser.add_argument(
+        "-rgb-sh",
+        "--rgb-shift",
+        type=float,
+        default=0.05,
+        help="RGB shift",
+    )
+    parser.add_argument(
+        "-rn-fog",
+        "--random-fog",
+        type=float,
+        default=0.05,
+        help="Random fog",
+    )
+    parser.add_argument(
+        "-rn-rain",
+        "--random-rain",
+        type=float,
+        default=0.05,
+        help="Random rain",
+    )
+    parser.add_argument(
+        "-rn-snow",
+        "--random-snow",
+        type=float,
+        default=0.05,
+        help="Random snow",
+    )
+    parser.add_argument(
+        "-rn-sun-flare",
+        "--random-sun-flare",
+        type=float,
+        default=0.05,
+        help="Random sun flare",
+    )
+    parser.add_argument(
+        "-rn-shadow",
+        "--random-shadow",
+        type=float,
+        default=0.05,
+        help="Random shadow",
     )
     args = parser.parse_args()
     main(args)

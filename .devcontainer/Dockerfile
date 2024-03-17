@@ -10,3 +10,4 @@ RUN pip install -U python-barcode
 RUN pip install -U tqdm
 
 
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
