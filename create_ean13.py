@@ -1,18 +1,16 @@
 import barcode
 from barcode.writer import ImageWriter
 from tqdm import tqdm
-import random
 import os
 import argparse
+import random
 
 
 def create_barcode(data: str, b_type: str, idx: int) -> None:
     folder_path = "./data/ean13"
     os.makedirs(folder_path, exist_ok=True)
     file_name = f"{idx}_{data}_ean13"
-    file_path = os.path.join(
-        folder_path, file_name + ".png"
-    )  # Ensure the file name has the .png extension
+    file_path = os.path.join(folder_path, file_name + ".png")
     try:
         barcode_obj = barcode.get_barcode_class(b_type)
         barcode_image = barcode_obj(data, writer=ImageWriter())
@@ -26,17 +24,25 @@ def generate_code(digits: int) -> str:
     return barcode.EAN13(base).get_fullcode()
 
 
-def main(num_images):
+def main(num_images, file_path, mode, seed=42):
+    random.seed(seed)  # Set a default seed for reproducibility
     barcode_type = "ean13"
-    digits = 13
-    dataset = []
-    for idx in tqdm(range(1, num_images + 1), desc="Generating Barcodes"):
-        data = generate_code(digits)
-        dataset.append(data)
-        create_barcode(data, barcode_type, idx)
-    with open("./data/ean13/dataset.txt", "w") as file:
-        for data in dataset:
-            file.write(f"{data}\n")
+    if mode == "from_list":
+        idx = 1
+        with open(file_path, "r") as file:
+            for line in tqdm(
+                file, total=num_images, desc="Generating Barcodes from List"
+            ):
+                data = line.strip()
+                create_barcode(data, barcode_type, idx)
+                idx += 1
+                if idx > num_images:
+                    break
+    elif mode == "random":
+        digits = 13
+        for idx in tqdm(range(1, num_images + 1), desc="Generating Random Barcodes"):
+            data = generate_code(digits)
+            create_barcode(data, barcode_type, idx)
 
 
 if __name__ == "__main__":
@@ -48,5 +54,23 @@ if __name__ == "__main__":
         default=50000,
         help="Number of barcode images to generate",
     )
+    parser.add_argument(
+        "-file-path",
+        "--file-path",
+        type=str,
+        help="Path to the text file with barcode numbers",
+        default="",
+    )
+    parser.add_argument(
+        "-mode",
+        "--mode",
+        choices=["random", "from_list"],
+        default="random",
+        help="Mode to generate barcode numbers: 'random' or 'from_list'",
+    )
+    parser.add_argument(
+        "-seed", "--seed", type=int, default=42, help="Seed for random number generator"
+    )
     args = parser.parse_args()
-    main(args.number_of_images)
+
+    main(args.number_of_images, args.file_path, args.mode, args.seed)
