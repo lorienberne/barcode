@@ -2,7 +2,7 @@
 	"name": "Your Container Name",
 	"dockerFile": "Dockerfile",
 	"context": ".",
-	"settings": { 
+	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash"
 	},
 	"extensions": []

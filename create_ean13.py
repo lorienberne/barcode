@@ -10,7 +10,7 @@ def create_barcode(data: str, b_type: str, idx: int) -> None:
     folder_path = "./data/ean13"
     os.makedirs(folder_path, exist_ok=True)
     file_name = f"{idx}_{data}_ean13"
-    file_path = os.path.join(folder_path, file_name + ".png")
+    file_path = os.path.join(folder_path, file_name)
     try:
         barcode_obj = barcode.get_barcode_class(b_type)
         barcode_image = barcode_obj(data, writer=ImageWriter())
