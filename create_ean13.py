@@ -42,7 +42,7 @@ def main(num_images, file_path, mode, seed, folder_path:str):
         digits = 13
         for idx in tqdm(range(1, num_images + 1), desc="Generating Random Barcodes"):
             data = generate_code(digits)
-            create_barcode(data, barcode_type, idx)
+            create_barcode(data, barcode_type, idx, folder_path=folder_path)
 
 
 if __name__ == "__main__":
