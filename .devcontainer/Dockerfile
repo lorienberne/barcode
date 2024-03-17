@@ -11,3 +11,9 @@ RUN pip install -U tqdm
 
 
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+RUN pip install -U ipykernel
+
+
+RUN apt-get update && \
+    apt-get install -y git && \
+    rm -rf /var/lib/apt/lists/*
