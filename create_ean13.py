@@ -8,7 +8,7 @@ import random
 
 def create_barcode(data: str, b_type: str, idx: int, folder_path:str) -> None:
     folder_path = folder_path
-    os.makedirs(folder_path, exist_ok=True)
+  
     file_name = f"{idx}_{data}_ean13"
     file_path = os.path.join(folder_path, file_name)
     try:
@@ -25,6 +25,16 @@ def generate_code(digits: int) -> str:
 
 
 def main(num_images, file_path, mode, seed, folder_path:str):
+
+    # If folder exists remove it and its contents
+    if os.path.exists(folder_path):
+        for file in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file)
+            os.remove(file_path)
+        os.rmdir(folder_path)
+
+    os.makedirs(folder_path, exist_ok=True)
+
     random.seed(seed)  # Set a default seed for reproducibility
     barcode_type = "ean13"
     if mode == "from_list":
