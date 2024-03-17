@@ -31,17 +31,19 @@ def main(args):
                 # Define the augmentation pipeline
                 transform = A.Compose(
                     [
-                        A.RandomBrightnessContrast(p=args.random_brightness_contrast),
-                        A.RandomGamma(p=args.random_gamma),
-                        A.Blur(p=args.blur),
-                        A.GaussNoise(p=args.gauss_noise),
-                        A.RGBShift(p=args.rgb_shift),
-                        A.RandomFog(p=args.random_fog),
-                        A.RandomRain(p=args.random_rain),
-                        A.RandomSnow(p=args.random_snow),
-                        A.RandomSunFlare(p=args.random_sun_flare),
-                        A.RandomShadow(p=args.random_shadow),
-                        A.Rotate(limit=10, p=args.rotate),
+                        A.OneOf([
+                            A.RandomBrightnessContrast(p=args.random_brightness_contrast, brightness_limit=0.05, contrast_limit=0.05),
+                            A.RandomGamma(p=args.random_gamma, gamma_limit=(95, 105)),
+                            A.Blur(p=args.blur, blur_limit=3),
+                            A.GaussNoise(p=args.gauss_noise),
+                            A.RGBShift(p=args.rgb_shift, r_shift_limit=5, g_shift_limit=5, b_shift_limit=5),
+                            A.RandomFog(p=args.random_fog),
+                            A.RandomRain(p=args.random_rain),
+                            A.RandomSnow(p=args.random_snow),
+                            A.RandomSunFlare(p=args.random_sun_flare, src_radius=200),
+                            A.RandomShadow(p=args.random_shadow),
+                            A.Rotate(limit=10, p=args.rotate),
+                        ], p=1)
                     ]
                 )
 
@@ -52,14 +54,14 @@ def main(args):
                 for i in range(args.number_of_images):
                     # Apply the augmentation
                     augmented = transform(image=image)
-                    image = augmented["image"]
+                    degraded = augmented["image"]
 
                     # Save the degraded image
                     file_name = file.split(".")[0]
                     output_file = os.path.join(
                         output_directory, f"{file_name}_{i}.png"
                     )
-                    cv2.imwrite(output_file, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+                    cv2.imwrite(output_file, cv2.cvtColor(degraded, cv2.COLOR_RGB2BGR))
 
 
 if __name__ == "__main__":
@@ -89,77 +91,77 @@ if __name__ == "__main__":
         "-rn-br-cont",
         "--random-brightness-contrast",
         type=float,
-        default=0.05,
+        default=0.0,
         help="Random brightness contrast",
     )
     parser.add_argument(
         "-rn-gamma",
         "--random-gamma",
         type=float,
-        default=0.05,
+        default=0.5,
         help="Random gamma",
     )
     parser.add_argument(
         "-bl",
         "--blur",
         type=float,
-        default=0.05,
+        default=0.5,
         help="Blur",
     )
     parser.add_argument(
         "-gn",
         "--gauss-noise",
         type=float,
-        default=0.05,
+        default=0.0,
         help="Gauss noise",
     )
     parser.add_argument(
         "-rgb-sh",
         "--rgb-shift",
         type=float,
-        default=0.05,
+        default=0.0,
         help="RGB shift",
     )
     parser.add_argument(
         "-rn-fog",
         "--random-fog",
         type=float,
-        default=0.05,
+        default=0.0,
         help="Random fog",
     )
     parser.add_argument(
         "-rn-rain",
         "--random-rain",
         type=float,
-        default=0.05,
+        default=0.0,
         help="Random rain",
     )
     parser.add_argument(
         "-rn-snow",
         "--random-snow",
         type=float,
-        default=0.05,
+        default=0.0,
         help="Random snow",
     )
     parser.add_argument(
         "-rn-sun-flare",
         "--random-sun-flare",
         type=float,
-        default=0.05,
+        default=0.5,
         help="Random sun flare",
     )
     parser.add_argument(
         "-rn-shadow",
         "--random-shadow",
         type=float,
-        default=0.05,
+        default=0.0,
         help="Random shadow",
     )
     parser.add_argument(
         "-rot",
         "--rotate",
         type=float,
-        default=0.05,
+        default=0.0,
         help="Rotate",
     )
     parser.add_argument(
