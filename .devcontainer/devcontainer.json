@@ -1,9 +1,13 @@
 {
-	"name": "Your Container Name",
+	"name": "Chupacabra",
 	"dockerFile": "Dockerfile",
 	"context": ".",
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash"
 	},
-	"extensions": []
+	"extensions": [
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"ms-toolsai.jupyter"
+	]
 }
