@@ -1,2 +1,6 @@
 *.png
+<<<<<<< Updated upstream
 .git
+=======
+*.pth
+>>>>>>> Stashed changes
