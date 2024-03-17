@@ -1,32 +1,73 @@
+import albumentations as A
+import argparse
 import os
-import random
-from PIL import Image, ImageFilter
-import numpy as np
+import cv2
 
-def add_noise(image):
-    np_image = np.array(image)
-    noise = np.random.normal(0, 0.05, np_image.shape)
-    noisy_image = np.clip(np_image + noise, 0, 1)
-    return Image.fromarray((noisy_image * 255).astype(np.uint8))
 
-def rotate_image(image):
-    return image.rotate(random.uniform(-10, 10))
+def main(args):
 
-def blur_image(image):
-    return image.filter(ImageFilter.GaussianBlur(radius=random.uniform(0, 2)))
+    input_directory = args.input_directory
+    output_directory = args.output_directory
 
-def degrade_image(image):
-    image = add_noise(image)
-    image = rotate_image(image)
-    image = blur_image(image)
-    return image
+    for root, dirs, files in os.walk(input_directory):
+        for file in files:
+            if file.endswith(".png"):
 
-def load_and_degrade_images(directory):
-    for filename in os.listdir(directory):
-        if filename.endswith(".png") or filename.endswith(".jpg"):
-            image_path = os.path.join(directory, filename)
-            image = Image.open(image_path)
-            degraded_image = degrade_image(image)
-            degraded_image.save(os.path.join(directory, "degraded_" + filename))
+                # Define the augmentation pipeline
+                transform = A.Compose(
+                    [
+                        A.RandomBrightnessContrast(p=0.5),
+                        A.RandomGamma(p=0.5),
+                        A.Blur(p=0.5),
+                        A.GaussNoise(p=0.5),
+                        A.RGBShift(p=0.5),
+                        A.RandomFog(p=0.5),
+                        A.RandomRain(p=0.5),
+                        A.RandomSnow(p=0.5),
+                        A.RandomSunFlare(p=0.5),
+                        A.RandomShadow(p=0.5),
+                    ]
+                )
 
-load_and_degrade_images("/home/lorienberne/workspace/barcode")
+                # Load the original image
+                image = cv2.imread(os.path.join(root, file))
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+                for i in range(args.number_of_images):
+                    # Apply the augmentation
+                    augmented = transform(image=image)
+                    image = augmented["image"]
+
+                    # Save the degraded image
+                    file_name = file.split(".")[0]
+                    output_file = os.path.join(
+                        output_directory, f"{file_name}_{i}.png"
+                    )
+                    cv2.imwrite(output_file, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate EAN13 barcodes.")
+    parser.add_argument(
+        "-i",
+        "--input-directory",
+        type=str,
+        default="./data/tmp/original",
+        help="Directory containing the original images",
+    )
+    parser.add_argument(
+        "-o",
+        "--output-directory",
+        type=str,
+        default="./data/tmp/degraded",
+        help="Directory to save the degraded images",
+    )
+    parser.add_argument(
+        "-nr-images",
+        "--number-of-images",
+        type=int,
+        default=50,
+        help="Number of barcode images to generate",
+    )
+    args = parser.parse_args()
+    main(args)

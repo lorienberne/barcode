@@ -7,5 +7,6 @@ RUN pip install -U torch torchvision
 RUN pip install -U pyzbar
 RUN pip install -U pillow
 RUN pip install -U python-barcode
+RUN pip install -U tqdm
 
 
