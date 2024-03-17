@@ -17,3 +17,6 @@ RUN pip install -U ipykernel
 RUN apt-get update && \
     apt-get install -y git && \
     rm -rf /var/lib/apt/lists/*
+
+RUN pip install -U matplotlib
+RUN pip install -U ipywidgets
