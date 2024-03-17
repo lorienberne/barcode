@@ -2,9 +2,12 @@ import albumentations as A
 import argparse
 import os
 import cv2
-
+import random
 
 def main(args):
+
+    # Set seed for reproducibility
+    random.seed(args.seed)
 
     input_directory = args.input_directory
     output_directory = args.output_directory
@@ -37,6 +40,7 @@ def main(args):
                         A.RandomSnow(p=args.random_snow),
                         A.RandomSunFlare(p=args.random_sun_flare),
                         A.RandomShadow(p=args.random_shadow),
+                        A.Rotate(limit=10, p=args.rotate),
                     ]
                 )
 
@@ -149,6 +153,20 @@ if __name__ == "__main__":
         type=float,
         default=0.05,
         help="Random shadow",
+    )
+    parser.add_argument(
+        "-rot",
+        "--rotate",
+        type=float,
+        default=0.05,
+        help="Rotate",
+    )
+    parser.add_argument(
+        "-seed",
+        "--seed",
+        type=int,
+        default=42,
+        help="Seed for random number generator",
     )
     args = parser.parse_args()
     main(args)
