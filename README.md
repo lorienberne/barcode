@@ -12,6 +12,7 @@ Albumentations
 https://medium.com/@saranshrajput/image-denoising-using-autoencoders-6244292bfa16  
 2. GANS
 https://arxiv.org/pdf/1701.05957.pdf
+https://github.com/manumathewthomas/ImageDenoisingGAN.git
 
 3. Vision transformers
 
