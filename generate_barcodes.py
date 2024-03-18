@@ -2,12 +2,14 @@ import subprocess
 import argparse
 
 def main(number_of_images, save_path, file_path, mode, seed, degrade_args):
+    original_save_path = save_path + "/original"
+    degraded_save_path = save_path + "/degraded"
     # First, generate barcode images
     print("Generating barcode images...")
     subprocess.run([
         "python", "./utils/create_ean13.py",
         "--number-of-images", str(number_of_images),
-        "--save-path", save_path,
+        "--save-path", original_save_path,
         "--file-path", file_path,
         "--mode", mode,
         "--seed", str(seed)
@@ -17,8 +19,8 @@ def main(number_of_images, save_path, file_path, mode, seed, degrade_args):
     print("Applying degradations to barcode images...")
     degrade_command = [
         "python", "./utils/degrade.py",
-        "--input-directory", save_path,
-        "--output-directory", save_path + "/degraded",
+        "--input-directory", original_save_path,
+        "--output-directory", degraded_save_path,
         "--seed", str(seed)
     ]
     # Append additional degrade arguments
