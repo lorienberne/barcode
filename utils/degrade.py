@@ -51,7 +51,7 @@ def main(args):
                 image = cv2.imread(os.path.join(root, file))
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-                for i in range(args.number_of_images):
+                for i in range(args.number_of_degradations):
                     # Apply the augmentation
                     augmented = transform(image=image)
                     degraded = augmented["image"]
@@ -81,11 +81,11 @@ if __name__ == "__main__":
         help="Directory to save the degraded images",
     )
     parser.add_argument(
-        "-nr-images",
-        "--number-of-images",
+        "-nr-degradations",
+        "--number-of-degradations",
         type=int,
-        default=50,
-        help="Number of barcode images to generate",
+        default=30,
+        help="Number of degradations of the original to generate",
     )
     parser.add_argument(
         "-rn-br-cont",
