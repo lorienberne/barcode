@@ -120,6 +120,8 @@ class Discriminator(nn.Module):
         self.conv3 = nn.Conv2d(96, 192, kernel_size=4, stride=2, padding=1)
         self.conv4 = nn.Conv2d(192, 384, kernel_size=4, stride=1, padding=1)
         self.conv5 = nn.Conv2d(384, 1, kernel_size=4, stride=1, padding=1)
+        self.flatten = nn.Flatten()
+        self.fc = nn.Linear(1 * 30 * 62, 1)
 
     def forward(self, x):
         x = F.leaky_relu(self.conv1(x), 0.2)
