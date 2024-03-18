@@ -1,3 +1,4 @@
 *.png
 .git
 *.pth
+__pycache__

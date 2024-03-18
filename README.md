@@ -7,5 +7,11 @@ python-barcode
 Albumentations
 
 ### Training
-1. [Convolutional Autoencoder](https://www.geeksforgeeks.org/implement-convolutional-autoencoder-in-pytorch-with-cuda/)
+**Things to try**
+1. [Convolutional Autoencoder](https://www.geeksforgeeks.org/implement-convolutional-autoencoder-in-pytorch-with-cuda/)  
+https://medium.com/@saranshrajput/image-denoising-using-autoencoders-6244292bfa16  
+2. GANS
 
+3. Vision transformers
+
+## Sources to investigate
