@@ -15,5 +15,7 @@ https://arxiv.org/pdf/1701.05957.pdf
 https://github.com/manumathewthomas/ImageDenoisingGAN.git
 
 3. Vision transformers
+https://huggingface.co/docs/transformers/model_doc/beit
+https://huggingface.co/docs/transformers/model_doc/vit
 
 ## Sources to investigate
