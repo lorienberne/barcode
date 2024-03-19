@@ -22,5 +22,7 @@ Try without the deconv layers
 Put Deconv Layers Back  
 
 3. Vision transformers
+https://huggingface.co/docs/transformers/model_doc/beit
+https://huggingface.co/docs/transformers/model_doc/vit
 
 ## Sources to investigate
