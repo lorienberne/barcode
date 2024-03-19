@@ -1,5 +1,5 @@
 # barcode
-The one and only true bar code  
+The one and only bar code  
 ![](./assets/barcode.jpg)
 
 In this project we try to denoise / regenerate a damaged barcode
