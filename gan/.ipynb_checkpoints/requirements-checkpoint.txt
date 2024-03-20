@@ -1,0 +1,11 @@
+albumentations
+opencv-python
+torch
+torchvision
+pyzbar
+pillow
+python-barcode
+tqdm
+ipykernel
+matplotlib
+ipywidgets
